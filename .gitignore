@@ -1,0 +1,28 @@
+# Ignore node_modules em qualquer subpasta
+**/node_modules/
+**/dist/
+**/.next/
+**/.turbo/
+**/build/
+
+# Logs
+**/npm-debug.log*
+
+# dotenv
+**/.env
+**/.env.*
+
+# VSCode
+.vscode/
+
+# Sistema
+.DS_Store
+Thumbs.db
+
+# IDEs
+.idea/
+*.swp
+
+# Outras pastas comuns de build
+**/.parcel-cache/
+**/.svelte-kit/
