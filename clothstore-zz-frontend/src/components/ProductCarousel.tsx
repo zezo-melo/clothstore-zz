@@ -53,8 +53,6 @@ export default function ProductCarousel() {
       ) : (
         <div ref={sliderRef} className="keen-slider max-w-6xl mx-auto">
           {products.map((product) => {
-            console.log("🖼️ Imagem recebida:", product.image);
-
             return (
               <div
                 key={product.id}
