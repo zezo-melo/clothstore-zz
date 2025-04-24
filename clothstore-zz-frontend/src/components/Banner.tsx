@@ -28,7 +28,7 @@ export default function Banner() {
       </p>
 
       <a
-        href="/produtos"
+        href="/products"
         className="bg-black text-white px-6 py-3 hover:bg-gray-800 transition"
       >
         View Products →
