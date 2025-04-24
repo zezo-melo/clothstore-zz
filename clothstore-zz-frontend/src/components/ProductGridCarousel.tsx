@@ -1,9 +1,9 @@
+// ...imports
 import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
 import { API_BASE_URL } from "../api";
-
 
 interface Product {
   id: number;
@@ -16,7 +16,43 @@ interface Product {
   }[];
 }
 
-// Plugin para sincronizar thumbs com o slider principal
+// Plugin de autoplay
+function AutoplayPlugin(interval = 3000) {
+  return (slider: any) => {
+    let timeout: any;
+    let mouseOver = false;
+
+    function clearNextTimeout() {
+      clearTimeout(timeout);
+    }
+
+    function nextTimeout() {
+      clearTimeout(timeout);
+      if (mouseOver) return;
+      timeout = setTimeout(() => {
+        slider.next();
+      }, interval);
+    }
+
+    slider.on("created", () => {
+      slider.container.addEventListener("mouseover", () => {
+        mouseOver = true;
+        clearNextTimeout();
+      });
+      slider.container.addEventListener("mouseout", () => {
+        mouseOver = false;
+        nextTimeout();
+      });
+      nextTimeout();
+    });
+
+    slider.on("dragStarted", clearNextTimeout);
+    slider.on("animationEnded", nextTimeout);
+    slider.on("updated", nextTimeout);
+  };
+}
+
+// Plugin de thumbnails
 function ThumbnailPlugin(mainRef: any) {
   return (slider: any) => {
     function removeActive() {
@@ -56,7 +92,7 @@ export default function ProductGridCarousel() {
   const [sliderRef, instanceRef] = useKeenSlider<HTMLDivElement>({
     initial: 0,
     loop: true,
-  });
+  }, [AutoplayPlugin(1500)]); // ⬅️ autoplay de 3.5s
 
   const [thumbnailRef] = useKeenSlider<HTMLDivElement>(
     {
@@ -72,7 +108,7 @@ export default function ProductGridCarousel() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get(`${API_BASE_URL}/shopify/products`);        
+        const response = await axios.get(`${API_BASE_URL}/shopify/products`);
         setProducts(response.data);
       } catch (error) {
         console.error("Erro ao buscar produtos:", error);
