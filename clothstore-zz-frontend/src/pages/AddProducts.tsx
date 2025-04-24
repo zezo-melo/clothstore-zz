@@ -11,8 +11,6 @@ export default function AddProducts() {
   const [price, setPrice] = useState("");
   const [imagesBase64, setImagesBase64] = useState<string[]>([]);
 
-
-
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     let value = e.target.value.replace(/\D/g, "");
     const formatted = new Intl.NumberFormat("pt-BR", {
@@ -34,13 +32,12 @@ export default function AddProducts() {
           reader.readAsDataURL(file);
         });
       });
-  
+
       Promise.all(base64Promises)
         .then(base64Images => setImagesBase64(base64Images))
         .catch(error => console.error("Erro ao converter imagens:", error));
     }
   };
-  
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -58,11 +55,11 @@ export default function AddProducts() {
 
     try {
       const response = await axios.post(`${API_BASE_URL}/shopify/products`, productData);
-      console.log("✅ Produto enviado com sucesso!", response.data);
-      alert("Produto criado com sucesso!");
+      console.log("✅ Product sent successfully!", response.data);
+      alert("Product created successfully!");
     } catch (error) {
-      console.error("❌ Erro ao enviar produto:", error);
-      alert("Erro ao enviar produto. Veja o console para mais detalhes.");
+      console.error("❌ Error sending product:", error);
+      alert("Error sending product. See console for details.");
     }
   };
 
@@ -71,7 +68,7 @@ export default function AddProducts() {
       <h1 className="text-3xl font-bold mb-6 text-center">Add New Product</h1>
       <form
         onSubmit={handleSubmit}
-        className="bg-white p-6 rounded shadow-md max-w-xl mx-auto space-y-6"
+        className="bg-white p-6 rounded shadow-md max-w-xl mx-auto space-y-6 px-4 sm:px-6"
       >
         {/* Title */}
         <div>
@@ -169,18 +166,24 @@ export default function AddProducts() {
 
         {/* Upload Image */}
         <div>
-          <label htmlFor="image" className="block font-semibold mb-1">
-            Product Image
-          </label>
-          <input
-            id="image"
-            type="file"
-            accept="image/*"
-            multiple
-            onChange={handleImageChange}
-            className="w-full border rounded px-4 py-2 bg-white"
-            required
-          />
+          <label className="block font-semibold mb-1">Product Image</label>
+          <div className="relative w-full">
+            <input
+              id="image"
+              type="file"
+              accept="image/*"
+              multiple
+              onChange={handleImageChange}
+              className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+              required
+            />
+            <label
+              htmlFor="image"
+              className="block w-full bg-white border border-gray-300 rounded px-4 py-2 cursor-pointer text-center text-gray-700 hover:bg-gray-100"
+            >
+              📁 Choose files
+            </label>
+          </div>
         </div>
 
         <button
