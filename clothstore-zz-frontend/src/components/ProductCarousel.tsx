@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import { useKeenSlider } from "keen-slider/react";
 import "keen-slider/keen-slider.min.css";
+import { API_BASE_URL } from "../api";
+
 
 interface Product {
   id: number;
@@ -29,7 +31,7 @@ export default function ProductCarousel() {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:3000/shopify/products");
+        const response = await axios.get(`${API_BASE_URL}/shopify/products`);        
         setProducts(response.data); // já vem formatado no backend
       } catch (error) {
         console.error("Erro ao buscar produtos:", error);

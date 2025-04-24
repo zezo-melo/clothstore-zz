@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { API_BASE_URL } from "../api";
 
 export default function AddProducts() {
   const [title, setTitle] = useState("");
@@ -56,7 +57,7 @@ export default function AddProducts() {
     };
 
     try {
-      const response = await axios.post("http://localhost:3000/shopify/products", productData);
+      const response = await axios.post(`${API_BASE_URL}/shopify/products`, productData);
       console.log("✅ Produto enviado com sucesso!", response.data);
       alert("Produto criado com sucesso!");
     } catch (error) {
