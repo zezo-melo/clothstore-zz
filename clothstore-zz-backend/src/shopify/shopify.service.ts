@@ -31,6 +31,8 @@ export class ShopifyService {
       },
     };
 
+    
+
     const response = await axios.post(this.apiUrl, payload, {
       headers: {
         'X-Shopify-Access-Token': process.env.SHOPIFY_ACCESS_TOKEN,
@@ -40,4 +42,30 @@ export class ShopifyService {
 
     return response.data;
   }
+
+  async getAllProducts() {
+    const url = `${process.env.SHOPIFY_STORE_URL}/admin/api/${process.env.SHOPIFY_API_VERSION}/products.json`;
+  
+    const response = await axios.get(url, {
+      headers: {
+        'X-Shopify-Access-Token': process.env.SHOPIFY_ACCESS_TOKEN,
+      },
+    });
+  
+    // formatando só os campos relevantes
+    const formatted = response.data.products.map((product) => ({
+      id: product.id,
+      title: product.title,
+      price: Number(product.variants?.[0]?.price || 0),
+      image: product.images?.[0]?.src || "",
+      images: product.images || [],
+
+    }));
+  
+    return formatted;
+  }
+  
+  
+  
+
 }
